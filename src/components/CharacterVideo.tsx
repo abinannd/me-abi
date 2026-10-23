@@ -11,7 +11,7 @@ export interface CharacterVideoProps {
 export const CharacterVideo: React.FC<CharacterVideoProps> = ({
   className,
   style,
-  src = '/assets/character/me2.mp4',
+  src = `${import.meta.env.BASE_URL}assets/character/me2.mp4`,
   sensitivity = 1.0,
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);

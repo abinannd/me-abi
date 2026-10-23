@@ -57,7 +57,7 @@ export const App: React.FC = () => {
         {/* 3. LAYER 2: Centered Character Video (z-index: 10) */}
         <div className="character-stage" aria-label="Hero Character Animation">
           <CharacterVideo
-            src="/assets/character/me2.mp4"
+            src={`${import.meta.env.BASE_URL}assets/character/me2.mp4`}
             className="hero-character-media"
           />
         </div>
