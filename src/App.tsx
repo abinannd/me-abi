@@ -9,7 +9,7 @@ export const App: React.FC = () => {
       {/* 1. LAYER 1: Minimal Top Navigation (z-index: 30) */}
       <header className="navbar">
         <a href="#hero" className="brand">
-          <span className="brand-badge">AT</span>
+          <span className="brand-badge">ATT</span>
           <div className="brand-text">
             <span className="brand-name">ABINAND TV</span>
             <span className="brand-role">Creative Technologist</span>
@@ -40,8 +40,8 @@ export const App: React.FC = () => {
           </div>
 
           <h1 className="hero-headline">
-            I build digital experiences <br />
-            <span className="text-gradient">that feel different.</span>
+             There Somthing About Me<br />
+            <span className="text-gradient">That Feel Different.</span>
           </h1>
 
           <div className="hero-cta-row">
@@ -64,14 +64,7 @@ export const App: React.FC = () => {
 
         {/* 4. LAYER 3: Procedural Fluid Wave Foreground Overlay (z-index: 20) */}
         <div className="wave-foreground-stage" aria-hidden="true">
-          <FluidWave
-            waveHeight={INITIAL_WAVE_CONFIG.waveHeight}
-            lineDensity={INITIAL_WAVE_CONFIG.lineDensity}
-            speed={INITIAL_WAVE_CONFIG.speed}
-            glow={INITIAL_WAVE_CONFIG.glow}
-            quality={INITIAL_WAVE_CONFIG.quality}
-            reducedMotion={INITIAL_WAVE_CONFIG.reducedMotion}
-          />
+          <FluidWave {...INITIAL_WAVE_CONFIG} />
         </div>
       </main>
 

@@ -8,12 +8,12 @@ uniform float uSpeed;
 uniform float uGlow;
 uniform float uQuality;
 uniform float uReducedMotion;
+uniform float uLoopDuration;
 
 varying vec2 vUv;
 
 #define PI 3.141592653589793
 #define TWO_PI 6.283185307179586
-#define LOOP_PERIOD 16.0
 
 // Color Palette
 // Deep shadow: #07131B
@@ -107,7 +107,8 @@ void main() {
 
   // Periodic time phase tau in [0, TWO_PI)
   float effectiveSpeed = uReducedMotion > 0.5 ? 0.08 : uSpeed;
-  float tNorm = mod(uTime * effectiveSpeed, LOOP_PERIOD) / LOOP_PERIOD;
+  float period = max(uLoopDuration, 1.0);
+  float tNorm = mod(uTime * effectiveSpeed, period) / period;
   float tau = tNorm * TWO_PI;
 
   // Normalized coordinate for horizontal evaluation

@@ -18,6 +18,8 @@ export const FluidWave: React.FC<FluidWaveProps> = ({
   glow = INITIAL_WAVE_CONFIG.glow,
   quality = INITIAL_WAVE_CONFIG.quality,
   reducedMotion = INITIAL_WAVE_CONFIG.reducedMotion,
+  respectSystemReducedMotion = INITIAL_WAVE_CONFIG.respectSystemReducedMotion,
+  loopDuration = INITIAL_WAVE_CONFIG.loopDuration,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -25,6 +27,14 @@ export const FluidWave: React.FC<FluidWaveProps> = ({
   // Keep references to Three.js objects for uniform updates without re-instantiation
   const materialRef = useRef<THREE.ShaderMaterial | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+
+  const getIsReduced = () => {
+    if (reducedMotion) return true;
+    if (respectSystemReducedMotion && typeof window !== 'undefined' && window.matchMedia) {
+      return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+    return false;
+  };
 
   // Sync props to uniforms smoothly without recreating WebGL resources
   useEffect(() => {
@@ -48,6 +58,11 @@ export const FluidWave: React.FC<FluidWaveProps> = ({
   }, [glow]);
 
   useEffect(() => {
+    if (!materialRef.current) return;
+    materialRef.current.uniforms.uLoopDuration.value = loopDuration;
+  }, [loopDuration]);
+
+  useEffect(() => {
     if (!materialRef.current || !rendererRef.current) return;
     const qualityMultiplier = quality === 'high' ? 1.0 : quality === 'medium' ? 0.75 : 0.5;
     materialRef.current.uniforms.uQuality.value = qualityMultiplier;
@@ -60,8 +75,8 @@ export const FluidWave: React.FC<FluidWaveProps> = ({
 
   useEffect(() => {
     if (!materialRef.current) return;
-    materialRef.current.uniforms.uReducedMotion.value = reducedMotion ? 1.0 : 0.0;
-  }, [reducedMotion]);
+    materialRef.current.uniforms.uReducedMotion.value = getIsReduced() ? 1.0 : 0.0;
+  }, [reducedMotion, respectSystemReducedMotion]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -93,10 +108,6 @@ export const FluidWave: React.FC<FluidWaveProps> = ({
     // Fullscreen quad geometry
     const geometry = new THREE.PlaneGeometry(2, 2);
 
-    // Check OS reduced motion preference, respecting prop if defined
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const isReduced = reducedMotion !== undefined ? reducedMotion : mediaQuery.matches;
-
     // Shader uniforms
     const uniforms = {
       uTime: { value: 0 },
@@ -106,7 +117,8 @@ export const FluidWave: React.FC<FluidWaveProps> = ({
       uSpeed: { value: speed },
       uGlow: { value: glow },
       uQuality: { value: qualityMultiplier },
-      uReducedMotion: { value: isReduced ? 1.0 : 0.0 },
+      uReducedMotion: { value: getIsReduced() ? 1.0 : 0.0 },
+      uLoopDuration: { value: loopDuration },
     };
 
     const material = new THREE.ShaderMaterial({
@@ -144,8 +156,9 @@ export const FluidWave: React.FC<FluidWaveProps> = ({
     resizeObserver.observe(container);
 
     // Media query listener for reduced motion
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     const handleMotionChange = (e: MediaQueryListEvent) => {
-      if (materialRef.current) {
+      if (materialRef.current && respectSystemReducedMotion && !reducedMotion) {
         materialRef.current.uniforms.uReducedMotion.value = e.matches ? 1.0 : 0.0;
       }
     };

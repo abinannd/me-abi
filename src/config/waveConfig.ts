@@ -1,8 +1,8 @@
 /**
  * Wave Shader Configuration
  * 
- * Centralized internal configuration preserving the wave shader's parameters
- * without requiring a visible user-facing control panel.
+ * Centralized configuration for all procedural wave shader parameters.
+ * Modify these values in code to adjust the rendered wave.
  */
 export interface WaveConfig {
   /** Amplitude multiplier for the wave crests (Default: 1.55) */
@@ -15,10 +15,19 @@ export interface WaveConfig {
   glow: number;
   /** GPU rendering quality tier ('high' for desktop, 'medium', or 'low') */
   quality: 'high' | 'medium' | 'low';
-  /** Reduced motion flag. When true, produces a serene, tranquil ambient drift */
-  reducedMotion: boolean;
   /** Periodic harmonic cycle duration in seconds for a seamless loop (Default: 16.0) */
   loopDuration: number;
+  /**
+   * Explicit reduced-motion override:
+   * - false: normal wave animation uses configured speed (Default: 1.10).
+   * - true: forces reduced motion (gentle ambient drift at 0.08 speed).
+   */
+  reducedMotion: boolean;
+  /**
+   * When true, automatically honors the operating system 'prefers-reduced-motion'
+   * media query, slowing down animation if the user has requested reduced motion in their OS.
+   */
+  respectSystemReducedMotion: boolean;
 }
 
 export const INITIAL_WAVE_CONFIG: WaveConfig = {
@@ -27,6 +36,7 @@ export const INITIAL_WAVE_CONFIG: WaveConfig = {
   speed: 1.10,
   glow: 1.70,
   quality: 'high',
-  reducedMotion: true, // Enabled as the initial setting per specification
+  reducedMotion: false, // Normal wave animation uses configured speed (1.10)
+  respectSystemReducedMotion: true, // Respects OS prefers-reduced-motion appropriately
   loopDuration: 16.0,
 };
