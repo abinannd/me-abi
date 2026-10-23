@@ -1,15 +1,17 @@
 import React from 'react';
 import { CharacterVideo } from './components/CharacterVideo';
 import { FluidWave } from './components/FluidWave';
+import { PanelSequence } from './components/PanelSequence';
 import { INITIAL_WAVE_CONFIG } from './config/waveConfig';
 
 export const App: React.FC = () => {
   return (
-    <div className="hero-container">
+    <>
+      <div className="hero-container">
       {/* 1. LAYER 1: Minimal Top Navigation (z-index: 30) */}
       <header className="navbar">
         <a href="#hero" className="brand">
-          <span className="brand-badge">ATT</span>
+          <span className="brand-badge">ABI</span>
           <div className="brand-text">
             <span className="brand-name">ABINAND TV</span>
             <span className="brand-role">Creative Technologist</span>
@@ -76,7 +78,9 @@ export const App: React.FC = () => {
         </svg>
       </div>
     </div>
-  );
+    <PanelSequence />
+  </>
+);
 };
 
 export default App;

@@ -1,0 +1,168 @@
+/* -------------------------------------------------------------
+   SEVEN-PANEL GLASSMORPHISM SCROLL SECTION
+   Futuristic, minimal, dark cyan-to-navy glassmorphism panels.
+   ------------------------------------------------------------- */
+
+.panel-sequence-section {
+  position: relative;
+  width: 100%;
+  background-color: var(--bg-deep-shadow);
+  padding: 100px 2rem 140px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.panel-sequence-container {
+  width: 90%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+.glass-panel {
+  position: relative;
+  height: 320px;
+  border-radius: 18px;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  /* Glassmorphism surface with the specified 5-stop cyan-to-navy gradient */
+  background: linear-gradient(
+    180deg,
+    rgba(32, 230, 224, 0.85) 0%,
+    rgba(12, 159, 175, 0.70) 24%,
+    rgba(7, 86, 111, 0.65) 48%,
+    rgba(16, 43, 73, 0.75) 72%,
+    rgba(11, 18, 32, 0.90) 100%
+  );
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  /* Thin, semi-transparent cyan-tinted glass border */
+  border: 1px solid rgba(101, 240, 224, 0.22);
+
+  /* Soft inner highlight and subtle drop shadow for depth */
+  box-shadow: 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 0 20px rgba(32, 230, 224, 0.08),
+    0 12px 30px -10px rgba(0, 0, 0, 0.5);
+
+  /* Initial unrevealed state for sequential scroll animation */
+  opacity: 0;
+  transform: translateY(35px) scale(0.97);
+  transition: 
+    opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--panel-index, 0) * 120ms);
+  will-change: opacity, transform;
+}
+
+/* Restrained upper cyan glow and glass reflection */
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background: radial-gradient(
+    ellipse 90% 70% at 50% 0%,
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(32, 230, 224, 0.16) 40%,
+    transparent 100%
+  );
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Revealed state triggered by IntersectionObserver */
+.glass-panel.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* -------------------------------------------------------------
+   RESPONSIVE BREAKPOINTS
+   ------------------------------------------------------------- */
+
+/* Tablet & medium displays */
+@media (max-width: 1024px) {
+  .panel-sequence-section {
+    padding: 80px 1.5rem 100px;
+  }
+
+  .panel-sequence-container {
+    width: 92%;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+
+  .glass-panel {
+    height: 270px;
+    border-radius: 16px;
+  }
+}
+
+/* Mobile displays */
+@media (max-width: 768px) {
+  .panel-sequence-section {
+    padding: 60px 1rem 80px;
+  }
+
+  .panel-sequence-container {
+    width: 94%;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .glass-panel {
+    height: 220px;
+    border-radius: 14px;
+  }
+
+  /* Center the 7th panel when in 2 columns */
+  .glass-panel:nth-child(7) {
+    grid-column: 1 / -1;
+    width: calc(50% - 6px);
+    margin: 0 auto;
+  }
+}
+
+/* Small mobile displays */
+@media (max-width: 375px) {
+  .panel-sequence-section {
+    padding: 48px 0.75rem 64px;
+  }
+
+  .panel-sequence-container {
+    width: 96%;
+    gap: 10px;
+  }
+
+  .glass-panel {
+    height: 180px;
+    border-radius: 12px;
+  }
+
+  .glass-panel:nth-child(7) {
+    width: calc(50% - 5px);
+  }
+}
+
+/* -------------------------------------------------------------
+   ACCESSIBILITY: PREFERS-REDUCED-MOTION
+   ------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .glass-panel {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
