@@ -2,28 +2,22 @@ import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import fragmentShader from '../shaders/fluidWave.glsl?raw';
 import vertexShader from '../shaders/vertex.glsl?raw';
+import { INITIAL_WAVE_CONFIG, WaveConfig } from '../config/waveConfig';
 
-export interface FluidWaveProps {
+export interface FluidWaveProps extends Partial<WaveConfig> {
   className?: string;
   style?: React.CSSProperties;
-  waveHeight?: number;    // Multiplier for wave amplitude (default: 1.0)
-  lineDensity?: number;   // Multiplier for contour line density (default: 1.0)
-  speed?: number;         // Animation speed multiplier (default: 1.0)
-  glow?: number;          // Cyan highlight glow intensity (default: 1.0)
-  quality?: 'high' | 'medium' | 'low'; // Rendering quality preset
-  reducedMotion?: boolean;// Explicit reduced motion override
-  isInteractive?: boolean;// Whether canvas responds to pointer
 }
 
 export const FluidWave: React.FC<FluidWaveProps> = ({
   className,
   style,
-  waveHeight = 1.0,
-  lineDensity = 1.0,
-  speed = 1.0,
-  glow = 1.0,
-  quality = 'high',
-  reducedMotion,
+  waveHeight = INITIAL_WAVE_CONFIG.waveHeight,
+  lineDensity = INITIAL_WAVE_CONFIG.lineDensity,
+  speed = INITIAL_WAVE_CONFIG.speed,
+  glow = INITIAL_WAVE_CONFIG.glow,
+  quality = INITIAL_WAVE_CONFIG.quality,
+  reducedMotion = INITIAL_WAVE_CONFIG.reducedMotion,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -66,9 +60,7 @@ export const FluidWave: React.FC<FluidWaveProps> = ({
 
   useEffect(() => {
     if (!materialRef.current) return;
-    if (reducedMotion !== undefined) {
-      materialRef.current.uniforms.uReducedMotion.value = reducedMotion ? 1.0 : 0.0;
-    }
+    materialRef.current.uniforms.uReducedMotion.value = reducedMotion ? 1.0 : 0.0;
   }, [reducedMotion]);
 
   useEffect(() => {
@@ -81,10 +73,8 @@ export const FluidWave: React.FC<FluidWaveProps> = ({
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
     // Initial quality calculation
-    const isMobile = window.innerWidth <= 768;
-    const activeQuality = quality || (isMobile ? 'medium' : 'high');
-    const qualityMultiplier = activeQuality === 'high' ? 1.0 : activeQuality === 'medium' ? 0.75 : 0.5;
-    const maxDpr = activeQuality === 'high' ? 2.0 : activeQuality === 'medium' ? 1.5 : 1.0;
+    const qualityMultiplier = quality === 'high' ? 1.0 : quality === 'medium' ? 0.75 : 0.5;
+    const maxDpr = quality === 'high' ? 2.0 : quality === 'medium' ? 1.5 : 1.0;
     const initialDpr = Math.min(window.devicePixelRatio || 1, maxDpr);
 
     // Alpha-capable WebGL renderer with transparent clear color
@@ -103,9 +93,9 @@ export const FluidWave: React.FC<FluidWaveProps> = ({
     // Fullscreen quad geometry
     const geometry = new THREE.PlaneGeometry(2, 2);
 
-    // Detect OS reduced motion preference
+    // Check OS reduced motion preference, respecting prop if defined
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const initialReducedMotion = reducedMotion !== undefined ? reducedMotion : mediaQuery.matches;
+    const isReduced = reducedMotion !== undefined ? reducedMotion : mediaQuery.matches;
 
     // Shader uniforms
     const uniforms = {
@@ -116,7 +106,7 @@ export const FluidWave: React.FC<FluidWaveProps> = ({
       uSpeed: { value: speed },
       uGlow: { value: glow },
       uQuality: { value: qualityMultiplier },
-      uReducedMotion: { value: initialReducedMotion ? 1.0 : 0.0 },
+      uReducedMotion: { value: isReduced ? 1.0 : 0.0 },
     };
 
     const material = new THREE.ShaderMaterial({
@@ -147,7 +137,7 @@ export const FluidWave: React.FC<FluidWaveProps> = ({
 
     updateSize();
 
-    // Use ResizeObserver for accurate sizing within any container or flex/grid layout
+    // Use ResizeObserver for accurate sizing within any container or layout
     const resizeObserver = new ResizeObserver(() => {
       updateSize();
     });
@@ -155,7 +145,7 @@ export const FluidWave: React.FC<FluidWaveProps> = ({
 
     // Media query listener for reduced motion
     const handleMotionChange = (e: MediaQueryListEvent) => {
-      if (reducedMotion === undefined && materialRef.current) {
+      if (materialRef.current) {
         materialRef.current.uniforms.uReducedMotion.value = e.matches ? 1.0 : 0.0;
       }
     };
@@ -207,7 +197,7 @@ export const FluidWave: React.FC<FluidWaveProps> = ({
       materialRef.current = null;
       rendererRef.current = null;
     };
-  }, []); // Run setup once on mount; props update uniforms via dedicated effects
+  }, []);
 
   return (
     <div
