@@ -27,15 +27,46 @@
   box-sizing: border-box;
 }
 
-html, body, #root {
+html {
   width: 100%;
   min-height: 100%;
   overflow-x: hidden;
+}
+
+body {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: clip;
   background-color: var(--bg-deep-shadow);
   color: var(--text-primary);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  min-height: 100%;
+}
+
+/* -------------------------------------------------------------
+   0. SCROLL-DRIVEN TAKEOVER TRACK & STICKY STAGE
+   Provides the required scroll distance while pinning the hero
+   and allowing panels to rise over it with native scrolling.
+   ------------------------------------------------------------- */
+.takeover-scroll-track {
+  position: relative;
+  width: 100%;
+  height: 250vh;
+}
+
+.takeover-sticky-stage {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  min-height: 720px;
+  overflow: hidden;
 }
 
 /* -------------------------------------------------------------
@@ -44,10 +75,10 @@ html, body, #root {
    No checkerboard, no grid lines, no graph texture.
    ------------------------------------------------------------- */
 .hero-container {
-  position: relative;
+  position: absolute;
+  inset: 0;
   width: 100%;
-  height: 100vh;
-  min-height: 720px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

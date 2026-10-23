@@ -1,17 +1,19 @@
 /* -------------------------------------------------------------
-   SEVEN-PANEL GLASSMORPHISM SCROLL SECTION
+   SEVEN-PANEL GLASSMORPHISM SCROLL-DRIVEN TAKEOVER SECTION
    Futuristic, minimal, dark cyan-to-navy glassmorphism panels.
    ------------------------------------------------------------- */
 
-.panel-sequence-section {
-  position: relative;
+.panel-sequence-overlay {
+  position: absolute;
+  inset: 0;
   width: 100%;
-  background-color: var(--bg-deep-shadow);
-  padding: 100px 2rem 140px;
+  height: 100%;
+  z-index: 40;
+  pointer-events: none;
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow-x: hidden;
+  overflow: hidden;
   box-sizing: border-box;
 }
 
@@ -27,7 +29,7 @@
 
 .glass-panel {
   position: relative;
-  height: 320px;
+  height: 340px;
   border-radius: 18px;
   overflow: hidden;
   box-sizing: border-box;
@@ -35,11 +37,11 @@
   /* Glassmorphism surface with the specified 5-stop cyan-to-navy gradient */
   background: linear-gradient(
     180deg,
-    rgba(32, 230, 224, 0.85) 0%,
-    rgba(12, 159, 175, 0.70) 24%,
+    rgba(32, 230, 224, 0.88) 0%,
+    rgba(12, 159, 175, 0.72) 24%,
     rgba(7, 86, 111, 0.65) 48%,
-    rgba(16, 43, 73, 0.75) 72%,
-    rgba(11, 18, 32, 0.90) 100%
+    rgba(16, 43, 73, 0.78) 72%,
+    rgba(11, 18, 32, 0.92) 100%
   );
 
   backdrop-filter: blur(12px);
@@ -50,18 +52,13 @@
 
   /* Soft inner highlight and subtle drop shadow for depth */
   box-shadow: 
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.3),
-    inset 0 0 20px rgba(32, 230, 224, 0.08),
-    0 12px 30px -10px rgba(0, 0, 0, 0.5);
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 0 20px rgba(32, 230, 224, 0.1),
+    0 16px 36px -8px rgba(0, 0, 0, 0.6);
 
-  /* Initial unrevealed state for sequential scroll animation */
-  opacity: 0;
-  transform: translateY(35px) scale(0.97);
-  transition: 
-    opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
-    transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
-  transition-delay: calc(var(--panel-index, 0) * 120ms);
-  will-change: opacity, transform;
+  /* Initial unrevealed state: translated down below the viewport */
+  transform: translate3d(0, 110vh, 0);
+  will-change: transform;
 }
 
 /* Restrained upper cyan glow and glass reflection */
@@ -82,10 +79,22 @@
   border-radius: inherit;
 }
 
-/* Revealed state triggered by IntersectionObserver */
-.glass-panel.is-visible {
-  opacity: 1;
-  transform: translateY(0) scale(1);
+/* Dedicated Content Layer for future content:
+   Sits above glass reflection, fades in once panels settle */
+.panel-content-layer {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem 0.85rem;
+  box-sizing: border-box;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease-out;
 }
 
 /* -------------------------------------------------------------
@@ -94,10 +103,6 @@
 
 /* Tablet & medium displays */
 @media (max-width: 1024px) {
-  .panel-sequence-section {
-    padding: 80px 1.5rem 100px;
-  }
-
   .panel-sequence-container {
     width: 92%;
     grid-template-columns: repeat(4, 1fr);
@@ -112,10 +117,6 @@
 
 /* Mobile displays */
 @media (max-width: 768px) {
-  .panel-sequence-section {
-    padding: 60px 1rem 80px;
-  }
-
   .panel-sequence-container {
     width: 94%;
     grid-template-columns: repeat(2, 1fr);
@@ -123,7 +124,7 @@
   }
 
   .glass-panel {
-    height: 220px;
+    height: 210px;
     border-radius: 14px;
   }
 
@@ -137,17 +138,13 @@
 
 /* Small mobile displays */
 @media (max-width: 375px) {
-  .panel-sequence-section {
-    padding: 48px 0.75rem 64px;
-  }
-
   .panel-sequence-container {
     width: 96%;
     gap: 10px;
   }
 
   .glass-panel {
-    height: 180px;
+    height: 175px;
     border-radius: 12px;
   }
 
@@ -160,9 +157,33 @@
    ACCESSIBILITY: PREFERS-REDUCED-MOTION
    ------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
+  .takeover-scroll-track {
+    height: auto !important;
+  }
+
+  .takeover-sticky-stage {
+    position: relative !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  .hero-container {
+    position: relative !important;
+  }
+
+  .panel-sequence-overlay {
+    position: relative !important;
+    padding: 80px 0 100px !important;
+    pointer-events: auto !important;
+  }
+
   .glass-panel {
-    opacity: 1 !important;
     transform: none !important;
-    transition: none !important;
+    will-change: auto !important;
+  }
+
+  .panel-content-layer {
+    opacity: 1 !important;
+    pointer-events: auto !important;
   }
 }
