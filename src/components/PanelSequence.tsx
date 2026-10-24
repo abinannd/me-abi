@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import './PanelSequence.css';
 
-const PANEL_COUNT = 7;
+const PANEL_COUNT = 8;
 
 interface PanelSequenceProps {
   trackRef?: React.RefObject<HTMLElement | null>;
