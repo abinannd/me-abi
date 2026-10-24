@@ -1,0 +1,238 @@
+/* -------------------------------------------------------------
+   CONTACT SECTION — FINAL CURTAIN & HORIZON
+   Cinematic closing curtain with contact actions and backdrop
+   ------------------------------------------------------------- */
+
+.contact-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 4rem 4rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background: radial-gradient(
+    ellipse 100% 90% at 50% 10%,
+    #101b2a 0%,
+    #090f18 45%,
+    #05080c 100%
+  );
+  color: var(--text-primary);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.contact-header {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 1.25rem;
+}
+
+.contact-badge {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  color: var(--color-cyan);
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.contact-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.contact-tag {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* Central Showcase with Backdrop */
+.contact-center-stage {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+  margin: 1.5rem 0;
+}
+
+.contact-copy-block {
+  flex: 1;
+  max-width: 580px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  z-index: 5;
+}
+
+.contact-lead-text {
+  font-size: 1.35rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #e2e8f0;
+}
+
+.contact-sub-text {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.contact-buttons-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.contact-cta-primary {
+  padding: 0.85rem 1.8rem;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, var(--color-teal), var(--color-cyan));
+  color: #041217;
+  font-weight: 700;
+  font-size: 0.92rem;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(8, 127, 140, 0.4);
+}
+
+.contact-cta-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(101, 240, 224, 0.5);
+}
+
+.contact-cta-secondary {
+  padding: 0.85rem 1.8rem;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.92rem;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.contact-cta-secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Contact Image Visual Frame */
+.contact-visual-frame {
+  flex: 1;
+  max-width: 580px;
+  height: 360px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(101, 240, 224, 0.22);
+  box-shadow: 
+    0 24px 60px -15px rgba(0, 0, 0, 0.8),
+    0 0 35px -5px rgba(101, 240, 224, 0.15);
+  position: relative;
+}
+
+.contact-visual-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Footer & Back to top */
+.contact-footer {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 1.25rem;
+}
+
+.contact-copyright {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.back-to-top-btn {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-cyan);
+  background: rgba(101, 240, 224, 0.08);
+  border: 1px solid rgba(101, 240, 224, 0.25);
+  padding: 0.45rem 1rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-to-top-btn:hover {
+  background: rgba(101, 240, 224, 0.16);
+  border-color: var(--color-cyan);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .contact-container {
+    padding: 3rem 2rem 2rem;
+  }
+  .contact-title {
+    font-size: 1.85rem;
+  }
+  .contact-lead-text {
+    font-size: 1.15rem;
+  }
+  .contact-visual-frame {
+    height: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-container {
+    padding: 2rem 1.25rem 1.5rem;
+  }
+  .contact-title {
+    font-size: 1.45rem;
+  }
+  .contact-center-stage {
+    flex-direction: column-reverse;
+    gap: 1.5rem;
+  }
+  .contact-visual-frame {
+    width: 100%;
+    height: 180px;
+  }
+  .contact-buttons-row {
+    flex-direction: column;
+    width: 100%;
+  }
+  .contact-cta-primary,
+  .contact-cta-secondary {
+    width: 100%;
+    text-align: center;
+  }
+}

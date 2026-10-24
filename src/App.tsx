@@ -1,14 +1,24 @@
 import React from 'react';
+import { CurtainSection } from './components/transitions/CurtainSection';
 import { CharacterVideo } from './components/CharacterVideo';
 import { FluidWave } from './components/FluidWave';
 import { INITIAL_WAVE_CONFIG } from './config/waveConfig';
+import { ExpansionSection } from './components/sections/ExpansionSection';
+import { ShowcaseSection } from './components/sections/ShowcaseSection';
+import { ContactSection } from './components/sections/ContactSection';
 
 export const App: React.FC = () => {
   return (
-    <div className="hero-page-stage">
-        {/* Preserved Hero Container */}
+    <div className="site-canvas">
+      {/* 1. HERO SECTION (z-index: 10, stationary pinned stage) */}
+      <CurtainSection
+        id="hero"
+        zIndex={10}
+        trackHeight="100vh"
+        backgroundColor="var(--bg-deep-shadow)"
+      >
         <div className="hero-container">
-          {/* 1. LAYER 1: Minimal Top Navigation (z-index: 30) */}
+          {/* LAYER 1: Minimal Top Navigation (z-index: 30) */}
           <header className="navbar">
             <a href="#hero" className="brand">
               <span className="brand-badge">ABI</span>
@@ -22,7 +32,6 @@ export const App: React.FC = () => {
               <ul className="nav-links">
                 <li><a href="#about" className="nav-link">About</a></li>
                 <li><a href="#projects" className="nav-link">Projects</a></li>
-                <li><a href="#skills" className="nav-link">Skills</a></li>
                 <li><a href="#contact" className="nav-link">Contact</a></li>
               </ul>
             </nav>
@@ -32,8 +41,8 @@ export const App: React.FC = () => {
             </a>
           </header>
 
-          {/* 2. Main Hero Stage */}
-          <main className="hero-stage" id="hero">
+          {/* LAYER 2: Main Hero Stage */}
+          <main className="hero-stage">
             {/* Upper Hero Typography & Context (z-index: 30) */}
             <div className="hero-header-block">
               <div className="hero-role-pill">
@@ -42,13 +51,13 @@ export const App: React.FC = () => {
               </div>
 
               <h1 className="hero-headline">
-                 There Somthing About Me<br />
+                There Somthing About Me<br />
                 <span className="text-gradient">That Feel Different.</span>
               </h1>
 
               <div className="hero-cta-row">
-                <a href="#projects" className="btn-primary">
-                  Explore Projects ↘
+                <a href="#about" className="btn-primary">
+                  Explore Architecture ↘
                 </a>
                 <a href="#contact" className="btn-secondary">
                   Get in Touch
@@ -56,7 +65,7 @@ export const App: React.FC = () => {
               </div>
             </div>
 
-            {/* 3. LAYER 2: Centered Character Video (z-index: 10) */}
+            {/* Centered Character Video (z-index: 10) */}
             <div className="character-stage" aria-label="Hero Character Animation">
               <CharacterVideo
                 src={`${import.meta.env.BASE_URL}assets/character/me2.mp4`}
@@ -64,7 +73,7 @@ export const App: React.FC = () => {
               />
             </div>
 
-            {/* 4. LAYER 3: Procedural Fluid Wave Foreground Overlay (z-index: 20) */}
+            {/* Procedural Fluid Wave Foreground Overlay (z-index: 20) */}
             <div className="wave-foreground-stage" aria-hidden="true">
               <FluidWave {...INITIAL_WAVE_CONFIG} />
             </div>
@@ -73,11 +82,29 @@ export const App: React.FC = () => {
           {/* Subtle Scroll Indicator at Viewport Base (z-index: 30) */}
           <div className="scroll-indicator" aria-hidden="true">
             <span className="scroll-text">SCROLL TO EXPLORE</span>
-            <svg className="scroll-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 5v14M19 12l-7 7-7-7"/>
+            <svg
+              className="scroll-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M12 5v14M19 12l-7 7-7-7" />
             </svg>
           </div>
         </div>
+      </CurtainSection>
+
+      {/* 2. SECTION 01: ARCHITECTURE & IMAGE EXPANSION (z-index: 20) */}
+      <ExpansionSection />
+
+      {/* 3. SECTION 02: SELECTED WORKS & PARALLAX CHOREOGRAPHY (z-index: 30) */}
+      <ShowcaseSection />
+
+      {/* 4. SECTION 03: INITIATE CONTACT & CLOSING CURTAIN (z-index: 40) */}
+      <ContactSection />
     </div>
   );
 };

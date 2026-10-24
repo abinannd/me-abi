@@ -1,0 +1,205 @@
+/* -------------------------------------------------------------
+   SHOWCASE SECTION — MULTI-IMAGE CHOREOGRAPHY
+   Editorial gallery layout with independent image movement
+   ------------------------------------------------------------- */
+
+.showcase-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 4rem 4rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background: radial-gradient(
+    ellipse 90% 80% at 50% 30%,
+    #0c1524 0%,
+    #080f1a 50%,
+    #05080e 100%
+  );
+  color: var(--text-primary);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.showcase-header {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 1.25rem;
+}
+
+.showcase-badge {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.15em;
+  color: var(--color-cyan);
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.showcase-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.showcase-counter {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--color-turquoise);
+  letter-spacing: 0.08em;
+}
+
+/* Gallery Grid */
+.showcase-gallery {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  max-width: 1400px;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr 1fr;
+  gap: 2rem;
+  align-items: center;
+  margin: 1.5rem 0;
+}
+
+/* Individual Gallery Item Cards */
+.gallery-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: transform 0.1s ease-out;
+  will-change: transform;
+}
+
+.gallery-media-wrapper {
+  position: relative;
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(101, 240, 224, 0.2);
+  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6);
+  background: #0b111b;
+}
+
+/* Left & Right: 16:9 Landscape */
+.gallery-item-side .gallery-media-wrapper {
+  height: 240px;
+}
+
+/* Center: 9:16 Portrait Focal Piece */
+.gallery-item-center .gallery-media-wrapper {
+  height: 380px;
+  border-color: rgba(101, 240, 224, 0.45);
+  box-shadow: 
+    0 24px 60px -12px rgba(0, 0, 0, 0.75),
+    0 0 35px -8px rgba(101, 240, 224, 0.25);
+}
+
+.gallery-media-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.gallery-item-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--color-cyan);
+  letter-spacing: 0.08em;
+}
+
+.gallery-item-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.gallery-item-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+/* Footer info */
+.showcase-footer {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 1.25rem;
+}
+
+.showcase-footer-text {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.showcase-footer-tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .showcase-container {
+    padding: 3rem 2rem 2rem;
+  }
+  .showcase-title {
+    font-size: 1.85rem;
+  }
+  .showcase-gallery {
+    gap: 1.25rem;
+  }
+  .gallery-item-side .gallery-media-wrapper {
+    height: 180px;
+  }
+  .gallery-item-center .gallery-media-wrapper {
+    height: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .showcase-container {
+    padding: 2rem 1.25rem 1.5rem;
+  }
+  .showcase-title {
+    font-size: 1.45rem;
+  }
+  .showcase-gallery {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    overflow-y: auto;
+  }
+  .gallery-item-side {
+    display: none; /* Emphasize central featured artifact on narrow viewports */
+  }
+  .gallery-item-center .gallery-media-wrapper {
+    height: 280px;
+  }
+}

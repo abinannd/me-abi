@@ -1,0 +1,32 @@
+/* -------------------------------------------------------------
+   CURTAIN SECTION SYSTEM
+   Provides seamless full-screen sticky stages where each section
+   rises from below and covers the previous stationary section.
+   ------------------------------------------------------------- */
+
+.curtain-track {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.curtain-sticky-frame {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  min-height: 640px;
+  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+.curtain-content-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
