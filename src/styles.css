@@ -450,3 +450,47 @@ body {
     height: 40vh;
   }
 }
+
+
+/* Cursor-reactive doodle hero — preserves the existing hero layout and wave overlay. */
+.doodle-hero-container {
+  position: relative;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  cursor: crosshair;
+  touch-action: pan-y;
+  mask-image: radial-gradient(ellipse 68% 64% at 50% 50%, black 45%, transparent 88%);
+  -webkit-mask-image: radial-gradient(ellipse 68% 64% at 50% 50%, black 45%, transparent 88%);
+}
+
+.doodle-hero-media {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.doodle-hero-loading {
+  position: absolute;
+  inset: auto 0 12%;
+  text-align: center;
+  color: var(--text-secondary);
+  font: 0.7rem var(--font-mono);
+  letter-spacing: 0.08em;
+  pointer-events: none;
+}
+
+.doodle-hero-container:has(.doodle-hero-media) {
+  background: radial-gradient(ellipse at 50% 45%, rgba(8, 127, 140, 0.10), transparent 68%);
+}
+
+@media (max-width: 768px) {
+  .doodle-hero-container {
+    max-width: 92vw;
+  }
+}
