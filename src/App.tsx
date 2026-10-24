@@ -1,15 +1,11 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { CharacterVideo } from './components/CharacterVideo';
 import { FluidWave } from './components/FluidWave';
-import { PanelSequence } from './components/PanelSequence';
 import { INITIAL_WAVE_CONFIG } from './config/waveConfig';
 
 export const App: React.FC = () => {
-  const trackRef = useRef<HTMLDivElement>(null);
-
   return (
-    <div className="takeover-scroll-track" ref={trackRef}>
-      <div className="takeover-sticky-stage">
+    <div className="hero-page-stage">
         {/* Preserved Hero Container */}
         <div className="hero-container">
           {/* 1. LAYER 1: Minimal Top Navigation (z-index: 30) */}
@@ -82,10 +78,6 @@ export const App: React.FC = () => {
             </svg>
           </div>
         </div>
-
-        {/* 5. Seven-Panel Glassmorphism Scroll-Driven Takeover Overlay (z-index: 40) */}
-        <PanelSequence trackRef={trackRef} />
-      </div>
     </div>
   );
 };
