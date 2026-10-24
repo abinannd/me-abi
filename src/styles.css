@@ -312,7 +312,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .character-container {
