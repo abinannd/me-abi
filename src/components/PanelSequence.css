@@ -22,15 +22,15 @@
   max-width: 1400px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 16px;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 0;
   box-sizing: border-box;
 }
 
 .glass-panel {
   position: relative;
   height: 340px;
-  border-radius: 18px;
+  border-radius: 0;
   overflow: hidden;
   box-sizing: border-box;
 
@@ -105,13 +105,13 @@
 @media (max-width: 1024px) {
   .panel-sequence-container {
     width: 92%;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
   }
 
   .glass-panel {
     height: 270px;
-    border-radius: 16px;
+    border-radius: 0;
   }
 }
 
@@ -119,21 +119,16 @@
 @media (max-width: 768px) {
   .panel-sequence-container {
     width: 94%;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0;
   }
 
   .glass-panel {
     height: 210px;
-    border-radius: 14px;
+    border-radius: 0;
   }
 
-  /* Center the 7th panel when in 2 columns */
-  .glass-panel:nth-child(7) {
-    grid-column: 1 / -1;
-    width: calc(50% - 6px);
-    margin: 0 auto;
-  }
+  /* Eight panels flow in a seamless 2-column mobile grid. */
 }
 
 /* Small mobile displays */
@@ -145,12 +140,9 @@
 
   .glass-panel {
     height: 175px;
-    border-radius: 12px;
+    border-radius: 0;
   }
 
-  .glass-panel:nth-child(7) {
-    width: calc(50% - 5px);
-  }
 }
 
 /* -------------------------------------------------------------
