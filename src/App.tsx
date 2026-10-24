@@ -1,6 +1,6 @@
 import React from 'react';
 import { CurtainSection } from './components/transitions/CurtainSection';
-import { DoodleHeroVideo } from './components/DoodleHeroVideo';
+import { CharacterVideo } from './components/CharacterVideo';
 import { FluidWave } from './components/FluidWave';
 import { INITIAL_WAVE_CONFIG } from './config/waveConfig';
 import { ExpansionSection } from './components/sections/ExpansionSection';
@@ -67,7 +67,10 @@ export const App: React.FC = () => {
 
             {/* Centered Character Video (z-index: 10) */}
             <div className="character-stage" aria-label="Hero Character Animation">
-              <DoodleHeroVideo className="hero-character-media" />
+              <CharacterVideo
+                src={`${import.meta.env.BASE_URL}assets/character/me2.mp4`}
+                className="hero-character-media"
+              />
             </div>
 
             {/* Procedural Fluid Wave Foreground Overlay (z-index: 20) */}
