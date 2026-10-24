@@ -50,19 +50,11 @@ body {
 }
 
 /* -------------------------------------------------------------
-   0. SCROLL-DRIVEN TAKEOVER TRACK & STICKY STAGE
-   Provides the required scroll distance while pinning the hero
-   and allowing panels to rise over it with native scrolling.
+   0. HERO PAGE STAGE
+   Standard full-screen hero; experimental curtain layout removed.
    ------------------------------------------------------------- */
-.takeover-scroll-track {
+.hero-page-stage {
   position: relative;
-  width: 100%;
-  height: 250vh;
-}
-
-.takeover-sticky-stage {
-  position: sticky;
-  top: 0;
   width: 100%;
   height: 100vh;
   min-height: 720px;
