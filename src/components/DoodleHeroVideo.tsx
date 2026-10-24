@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 type Direction = { x: number; y: number };
 const clamp = (value: number, min: number, max: number) => Math.max(min, Math.min(max, value));
-const POSES = { right: 1.78, downRight: 2.75, down: 5.92, downLeft: 4.72, left: 4.15, upLeft: 3.55, up: 7.72, upRight: 1.05, neutral: 7.72 } as const;
+const POSES: Record<string, number> = { right: 1.78, downRight: 2.75, down: 5.92, downLeft: 4.72, left: 4.15, upLeft: 3.55, up: 7.72, upRight: 1.05, neutral: 7.72 };
 function poseFor({ x, y }: Direction) {
   if (Math.hypot(x, y) < 0.16) return POSES.neutral;
   const angle = (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
