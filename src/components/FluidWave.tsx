@@ -168,14 +168,27 @@ export const FluidWave: React.FC<FluidWaveProps> = ({
     let animationFrameId: number;
     let lastTime = performance.now();
     let accumulatedTime = 0;
-    let isVisible = !document.hidden;
+    let tabVisible = !document.hidden;
+    let inView = true;
+    let isVisible = tabVisible;
+
+    const syncVisibility = () => {
+      const next = tabVisible && inView;
+      if (next && !isVisible) lastTime = performance.now();
+      isVisible = next;
+    };
 
     const handleVisibilityChange = () => {
-      isVisible = !document.hidden;
-      if (isVisible) {
-        lastTime = performance.now();
-      }
+      tabVisible = !document.hidden;
+      syncVisibility();
     };
+
+    // Skip all GPU work while the hero is scrolled out of the viewport.
+    const intersectionObserver = new IntersectionObserver((entries) => {
+      inView = entries[entries.length - 1].isIntersecting;
+      syncVisibility();
+    });
+    intersectionObserver.observe(container);
     document.addEventListener('visibilitychange', handleVisibilityChange);
 
     const animate = (currentTime: number) => {
@@ -201,6 +214,7 @@ export const FluidWave: React.FC<FluidWaveProps> = ({
     return () => {
       cancelAnimationFrame(animationFrameId);
       resizeObserver.disconnect();
+      intersectionObserver.disconnect();
       mediaQuery.removeEventListener('change', handleMotionChange);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
 

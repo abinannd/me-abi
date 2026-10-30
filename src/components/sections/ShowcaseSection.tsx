@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import { CurtainSection } from '../transitions/CurtainSection';
 import { getImageByIndex } from '../../config/imageAssets';
 import './ShowcaseSection.css';
@@ -12,6 +12,20 @@ export const ShowcaseSection: React.FC = () => {
   const imageCenter = getImageByIndex(3);
   const imageRight = getImageByIndex(4);
 
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const infoRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const applyProgress = useCallback((progress: number) => {
+    const easeP = 1 - Math.pow(1 - progress, 2);
+    const offsets = [70, -50, 90];
+    offsets.forEach((o, i) => {
+      const el = itemRefs.current[i];
+      if (el) el.style.transform = `translate3d(0, ${Math.round((1 - easeP) * o)}px, 0)`;
+    });
+    const infoOpacity = String(Math.min(1, Math.max(0, (progress - 0.25) / 0.5)));
+    infoRefs.current.forEach((el) => { if (el) el.style.opacity = infoOpacity; });
+  }, []);
+
   return (
     <CurtainSection
       id="projects"
@@ -19,19 +33,9 @@ export const ShowcaseSection: React.FC = () => {
       trackHeight="220vh"
       backgroundColor="#05080e"
       className="showcase-curtain"
+      onProgress={applyProgress}
     >
-      {({ progress }) => {
-        // Smooth easing for independent image movement
-        const easeP = 1 - Math.pow(1 - progress, 2);
-
-        // Individual vertical parallax translations that settle into destination
-        const leftY = Math.round((1 - easeP) * 70);
-        const centerY = Math.round((1 - easeP) * -50);
-        const rightY = Math.round((1 - easeP) * 90);
-
-        // Opacity reveal for supporting descriptions as composition locks
-        const infoOpacity = Math.min(1, Math.max(0, (progress - 0.25) / 0.5));
-
+      {(() => {
         return (
           <div className="showcase-container">
             {/* Header Rail */}
@@ -50,16 +54,14 @@ export const ShowcaseSection: React.FC = () => {
               {/* Left Item */}
               <div
                 className="gallery-item gallery-item-side"
-                style={{
-                  transform: `translate3d(0, ${leftY}px, 0)`,
-                }}
+                ref={(el) => { itemRefs.current[0] = el; }}
               >
                 <div className="gallery-media-wrapper">
                   <img src={imageLeft} alt="Procedural Synthesis" loading="lazy" />
                 </div>
                 <div
                   className="gallery-item-info"
-                  style={{ opacity: infoOpacity }}
+                  ref={(el) => { infoRefs.current[0] = el; }}
                 >
                   <span className="gallery-item-tag">SYS // GLSL SHADER</span>
                   <h3 className="gallery-item-title">Procedural Synthesis</h3>
@@ -72,16 +74,14 @@ export const ShowcaseSection: React.FC = () => {
               {/* Center Featured Item */}
               <div
                 className="gallery-item gallery-item-center"
-                style={{
-                  transform: `translate3d(0, ${centerY}px, 0)`,
-                }}
+                ref={(el) => { itemRefs.current[1] = el; }}
               >
                 <div className="gallery-media-wrapper">
                   <img src={imageCenter} alt="Spatial Avatar" loading="eager" />
                 </div>
                 <div
                   className="gallery-item-info"
-                  style={{ opacity: infoOpacity }}
+                  ref={(el) => { infoRefs.current[1] = el; }}
                 >
                   <span className="gallery-item-tag">CORE // DISCRETE GAZE</span>
                   <h3 className="gallery-item-title">Spatial Avatar Engine</h3>
@@ -94,16 +94,14 @@ export const ShowcaseSection: React.FC = () => {
               {/* Right Item */}
               <div
                 className="gallery-item gallery-item-side"
-                style={{
-                  transform: `translate3d(0, ${rightY}px, 0)`,
-                }}
+                ref={(el) => { itemRefs.current[2] = el; }}
               >
                 <div className="gallery-media-wrapper">
                   <img src={imageRight} alt="Fluid Dynamics" loading="lazy" />
                 </div>
                 <div
                   className="gallery-item-info"
-                  style={{ opacity: infoOpacity }}
+                  ref={(el) => { infoRefs.current[2] = el; }}
                 >
                   <span className="gallery-item-tag">RENDER // WEBGL PIPELINE</span>
                   <h3 className="gallery-item-title">Fluid Wave Overlay</h3>
@@ -125,7 +123,7 @@ export const ShowcaseSection: React.FC = () => {
             </footer>
           </div>
         );
-      }}
+      })()}
     </CurtainSection>
   );
 };

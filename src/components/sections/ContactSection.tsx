@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import { CurtainSection } from '../transitions/CurtainSection';
 import { getImageByIndex } from '../../config/imageAssets';
 import './ContactSection.css';
@@ -6,6 +6,15 @@ import './ContactSection.css';
 export const ContactSection: React.FC = () => {
   // Placement index 5 -> 2.png (cycles via images[5 % 4] = images[1])
   const contactImage = getImageByIndex(5);
+
+  const copyRef = useRef<HTMLDivElement>(null);
+  const visualRef = useRef<HTMLDivElement>(null);
+
+  const applyProgress = useCallback((progress: number) => {
+    const easeP = 1 - Math.pow(1 - progress, 2);
+    if (copyRef.current) copyRef.current.style.opacity = String(Math.min(1, Math.max(0, progress * 1.8)));
+    if (visualRef.current) visualRef.current.style.transform = `translate3d(0, ${Math.round((1 - easeP) * 50)}px, 0)`;
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -18,12 +27,9 @@ export const ContactSection: React.FC = () => {
       trackHeight="160vh"
       backgroundColor="#05080c"
       className="contact-curtain"
+      onProgress={applyProgress}
     >
-      {({ progress }) => {
-        const easeP = 1 - Math.pow(1 - progress, 2);
-        const visualY = Math.round((1 - easeP) * 50);
-        const copyOpacity = Math.min(1, Math.max(0, progress * 1.8));
-
+      {(() => {
         return (
           <div className="contact-container">
             {/* Header Rail */}
@@ -40,8 +46,8 @@ export const ContactSection: React.FC = () => {
             {/* Central Stage */}
             <div className="contact-center-stage">
               <div
+                ref={copyRef}
                 className="contact-copy-block"
-                style={{ opacity: copyOpacity }}
               >
                 <p className="contact-lead-text">
                   Specializing in bespoke web applications, WebGL graphics, and
@@ -71,10 +77,8 @@ export const ContactSection: React.FC = () => {
               </div>
 
               <div
+                ref={visualRef}
                 className="contact-visual-frame"
-                style={{
-                  transform: `translate3d(0, ${visualY}px, 0)`,
-                }}
               >
                 <img
                   src={contactImage}
@@ -100,7 +104,7 @@ export const ContactSection: React.FC = () => {
             </footer>
           </div>
         );
-      }}
+      })()}
     </CurtainSection>
   );
 };

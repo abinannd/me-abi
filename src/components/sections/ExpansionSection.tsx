@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import { CurtainSection } from '../transitions/CurtainSection';
 import { getImageByIndex } from '../../config/imageAssets';
 import './ExpansionSection.css';
@@ -9,6 +9,44 @@ export const ExpansionSection: React.FC = () => {
   // Placement index 1 -> 2.png (Supporting secondary thumbnail)
   const secondaryImage = getImageByIndex(1);
 
+  const frameRef = useRef<HTMLDivElement>(null);
+  const leftRef = useRef<HTMLDivElement>(null);
+  const rightRef = useRef<HTMLDivElement>(null);
+
+  // Scroll progress is applied straight to the DOM (no React state, no re-render per frame).
+  const applyProgress = useCallback((progress: number) => {
+    const easeP = 1 - Math.pow(1 - progress, 2.5);
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const isMobile = w <= 768;
+    const initialW = isMobile ? 320 : 460;
+    const targetW = isMobile ? Math.min(w * 0.92, 540) : Math.min(1360, w * 0.92);
+    const initialH = isMobile ? 200 : 280;
+    const targetH = isMobile ? Math.min(h * 0.45, 360) : Math.min(620, h * 0.65);
+
+    const frame = frameRef.current;
+    if (frame) {
+      frame.style.width = `${Math.round(initialW + easeP * (targetW - initialW))}px`;
+      frame.style.height = `${Math.round(initialH + easeP * (targetH - initialH))}px`;
+    }
+
+    const flankOpacity = Math.max(0, 1 - progress * 2.5);
+    const dx = Math.round(progress * 40);
+    const pe = flankOpacity < 0.1 ? 'none' : 'auto';
+    const left = leftRef.current;
+    if (left) {
+      left.style.opacity = String(flankOpacity);
+      left.style.transform = `translate3d(${-dx}px, 0, 0)`;
+      left.style.pointerEvents = pe;
+    }
+    const right = rightRef.current;
+    if (right) {
+      right.style.opacity = String(flankOpacity);
+      right.style.transform = `translate3d(${dx}px, 0, 0)`;
+      right.style.pointerEvents = pe;
+    }
+  }, []);
+
   return (
     <CurtainSection
       id="about"
@@ -16,31 +54,9 @@ export const ExpansionSection: React.FC = () => {
       trackHeight="240vh"
       backgroundColor="#090d16"
       className="expansion-curtain"
+      onProgress={applyProgress}
     >
-      {({ progress }) => {
-        // Smooth easing for image dimensions
-        const easeP = 1 - Math.pow(1 - progress, 2.5);
-
-        // Calculate dynamic dimensions between initial editorial frame and full-stage expanse
-        const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768;
-        const initialW = isMobile ? 320 : 460;
-        const targetW = isMobile
-          ? Math.min(window.innerWidth * 0.92, 540)
-          : Math.min(1360, window.innerWidth * 0.92);
-
-        const initialH = isMobile ? 200 : 280;
-        const targetH = isMobile
-          ? Math.min(window.innerHeight * 0.45, 360)
-          : Math.min(620, window.innerHeight * 0.65);
-
-        const currentW = Math.round(initialW + easeP * (targetW - initialW));
-        const currentH = Math.round(initialH + easeP * (targetH - initialH));
-
-        // Fade flanking editorial text as the image expands
-        const flankOpacity = Math.max(0, 1 - progress * 2.5);
-        const flankLeftX = -Math.round(progress * 40);
-        const flankRightX = Math.round(progress * 40);
-
+      {(() => {
         return (
           <div className="expansion-container">
             {/* Header Rail */}
@@ -58,12 +74,8 @@ export const ExpansionSection: React.FC = () => {
             <div className="expansion-stage">
               {/* Left Editorial Flank */}
               <div
+                ref={leftRef}
                 className="expansion-flank-left"
-                style={{
-                  opacity: flankOpacity,
-                  transform: `translate3d(${flankLeftX}px, 0, 0)`,
-                  pointerEvents: flankOpacity < 0.1 ? 'none' : 'auto',
-                }}
               >
                 <p className="flank-quote">
                   "Where structured engineering dissolves into cinematic motion.
@@ -76,11 +88,8 @@ export const ExpansionSection: React.FC = () => {
 
               {/* The Expanding Hero Frame */}
               <div
+                ref={frameRef}
                 className="expansion-image-frame"
-                style={{
-                  width: `${currentW}px`,
-                  height: `${currentH}px`,
-                }}
               >
                 <img
                   src={primaryImage}
@@ -91,12 +100,8 @@ export const ExpansionSection: React.FC = () => {
 
               {/* Right Supporting Flank */}
               <div
+                ref={rightRef}
                 className="expansion-flank-right"
-                style={{
-                  opacity: flankOpacity,
-                  transform: `translate3d(${flankRightX}px, 0, 0)`,
-                  pointerEvents: flankOpacity < 0.1 ? 'none' : 'auto',
-                }}
               >
                 <div className="secondary-thumbnail-card">
                   <img src={secondaryImage} alt="GPU Render Spec" />
@@ -130,7 +135,7 @@ export const ExpansionSection: React.FC = () => {
             </footer>
           </div>
         );
-      }}
+      })()}
     </CurtainSection>
   );
 };

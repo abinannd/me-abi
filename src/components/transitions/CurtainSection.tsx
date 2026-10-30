@@ -1,4 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { subscribeScroll } from './scrollLoop';
 import './CurtainSection.css';
 
 export interface CurtainSectionProps {
@@ -7,7 +8,13 @@ export interface CurtainSectionProps {
   trackHeight?: string;
   className?: string;
   backgroundColor?: string;
-  children: React.ReactNode | ((props: { progress: number; isPinned: boolean }) => React.ReactNode);
+  /**
+   * Called (outside React) whenever the section's scroll progress changes, with the
+   * sticky frame element. Use it to write transforms/styles directly — progress never
+   * goes through React state, so scrolling does not re-render the tree.
+   */
+  onProgress?: (progress: number, frame: HTMLElement) => void;
+  children: React.ReactNode;
 }
 
 export const CurtainSection: React.FC<CurtainSectionProps> = ({
@@ -16,61 +23,44 @@ export const CurtainSection: React.FC<CurtainSectionProps> = ({
   trackHeight = '100vh',
   className = '',
   backgroundColor = 'var(--bg-deep-shadow)',
+  onProgress,
   children,
 }) => {
   const trackRef = useRef<HTMLElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
-  const [progress, setProgress] = useState(0);
-  const [isPinned, setIsPinned] = useState(false);
+  const onProgressRef = useRef(onProgress);
+  onProgressRef.current = onProgress;
 
   useEffect(() => {
-    let rafId: number | null = null;
+    const track = trackRef.current;
+    const sticky = stickyRef.current;
+    if (!track || !sticky) return;
 
-    const handleScroll = () => {
-      const track = trackRef.current;
-      if (!track) return;
+    // Cached geometry (document-space), refreshed only on resize / layout change.
+    let trackTop = 0;
+    let scrollableDist = 0;
+    let lastProgress = -1;
 
+    const measure = () => {
       const rect = track.getBoundingClientRect();
-      const viewportH = window.innerHeight;
-      const scrollableDist = track.offsetHeight - viewportH;
-
-      // Section is active / pinned when its top edge has reached or passed 0
-      const trackTop = -rect.top;
-      const pinned = rect.top <= 0 && rect.bottom >= viewportH;
-      setIsPinned(pinned);
-
-      let currentProgress = 0;
-      if (scrollableDist > 0) {
-        currentProgress = Math.min(1, Math.max(0, trackTop / scrollableDist));
-      } else {
-        currentProgress = rect.top <= 0 ? 1 : 0;
-      }
-
-      setProgress(currentProgress);
-
-      if (stickyRef.current) {
-        stickyRef.current.style.setProperty('--section-progress', currentProgress.toFixed(4));
-      }
+      trackTop = rect.top + window.scrollY;
+      scrollableDist = track.offsetHeight - window.innerHeight;
+      lastProgress = -1; // force a write after any re-measure
     };
 
-    const onScroll = () => {
-      if (rafId === null) {
-        rafId = requestAnimationFrame(() => {
-          handleScroll();
-          rafId = null;
-        });
-      }
+    const update = (scrollY: number) => {
+      const traveled = scrollY - trackTop;
+      const progress = scrollableDist > 0
+        ? Math.min(1, Math.max(0, traveled / scrollableDist))
+        : traveled >= 0 ? 1 : 0;
+
+      if (progress === lastProgress) return; // clamped (off-screen) sections do no work
+      lastProgress = progress;
+      sticky.style.setProperty('--section-progress', progress.toFixed(4));
+      onProgressRef.current?.(progress, sticky);
     };
 
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    handleScroll();
-
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-      if (rafId !== null) cancelAnimationFrame(rafId);
-    };
+    return subscribeScroll({ measure, update });
   }, []);
 
   return (
@@ -90,9 +80,7 @@ export const CurtainSection: React.FC<CurtainSectionProps> = ({
           backgroundColor,
         }}
       >
-        <div className="curtain-content-wrapper">
-          {typeof children === 'function' ? children({ progress, isPinned }) : children}
-        </div>
+        <div className="curtain-content-wrapper">{children}</div>
       </div>
     </section>
   );
