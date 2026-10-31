@@ -162,11 +162,19 @@ body {
   list-style: none;
 }
 
+/* Centre the nav group absolutely within the navbar */
+.navbar > nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .nav-link {
   color: var(--text-secondary);
   text-decoration: none;
   font-size: 0.88rem;
   font-weight: 500;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   transition: color 0.2s ease;
 }
 
