@@ -25,7 +25,7 @@ export const ContactSection: React.FC = () => {
       id="contact"
       zIndex={40}
       trackHeight="160vh"
-      backgroundColor="#1A0F2E"
+      backgroundColor="#1A120E"
       className="contact-curtain"
       onProgress={applyProgress}
     >

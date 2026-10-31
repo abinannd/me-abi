@@ -14,9 +14,9 @@
   align-items: center;
   background: radial-gradient(
     ellipse 90% 80% at 50% 30%,
-    #3B1B4F 0%,
-    #1A0F2E 50%,
-    #1A0F2E 100%
+    #3A2418 0%,
+    #1A120E 50%,
+    #1A120E 100%
   );
   color: var(--text-primary);
   box-sizing: border-box;
@@ -31,7 +31,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  border-bottom: 1px solid rgba(244, 215, 212, 0.08);
+  border-bottom: 1px solid rgba(213, 196, 174, 0.08);
   padding-bottom: 1.25rem;
 }
 
@@ -49,7 +49,7 @@
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.1;
-  background: linear-gradient(135deg, #F4D7D4 40%, #D6598F 100%);
+  background: linear-gradient(135deg, #D5C4AE 40%, #A88462 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -88,9 +88,9 @@
   width: 100%;
   border-radius: 16px;
   overflow: hidden;
-  border: 1px solid rgba(214, 89, 143, 0.2);
+  border: 1px solid rgba(168, 132, 98, 0.2);
   box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.6);
-  background: #3B1B4F;
+  background: #3A2418;
 }
 
 /* Left & Right: 16:9 Landscape */
@@ -101,10 +101,10 @@
 /* Center: 9:16 Portrait Focal Piece */
 .gallery-item-center .gallery-media-wrapper {
   height: 380px;
-  border-color: rgba(214, 89, 143, 0.45);
+  border-color: rgba(168, 132, 98, 0.45);
   box-shadow: 
     0 24px 60px -12px rgba(0, 0, 0, 0.75),
-    0 0 35px -8px rgba(214, 89, 143, 0.25);
+    0 0 35px -8px rgba(168, 132, 98, 0.25);
 }
 
 .gallery-media-wrapper img {
@@ -149,7 +149,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid rgba(244, 215, 212, 0.08);
+  border-top: 1px solid rgba(213, 196, 174, 0.08);
   padding-top: 1.25rem;
 }
 
