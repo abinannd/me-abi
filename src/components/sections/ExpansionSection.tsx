@@ -52,7 +52,7 @@ export const ExpansionSection: React.FC = () => {
       id="about"
       zIndex={20}
       trackHeight="240vh"
-      backgroundColor="#090d16"
+      backgroundColor="#06141B"
       className="expansion-curtain"
       onProgress={applyProgress}
     >

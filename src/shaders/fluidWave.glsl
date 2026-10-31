@@ -16,16 +16,16 @@ varying vec2 vUv;
 #define TWO_PI 6.283185307179586
 
 // Color Palette
-// Deep shadow: #07131B
-const vec3 C_SHADOW    = vec3(0.0275, 0.0745, 0.1059);
-// Dark teal: #06434A
-const vec3 C_DARK_TEAL = vec3(0.0235, 0.2627, 0.2902);
-// Main teal: #087F8C
-const vec3 C_TEAL      = vec3(0.0314, 0.4980, 0.5490);
-// Turquoise: #18B8B5
-const vec3 C_TURQUOISE = vec3(0.0941, 0.7216, 0.7098);
-// Cyan highlight: #65F0E0
-const vec3 C_CYAN      = vec3(0.3961, 0.9412, 0.8784);
+// #06141B
+const vec3 C_SHADOW    = vec3(0.0235, 0.0784, 0.1059);
+// #253745
+const vec3 C_DARK_TEAL = vec3(0.1451, 0.2157, 0.2706);
+// #4A5C6A
+const vec3 C_TEAL      = vec3(0.2902, 0.3608, 0.4157);
+// #9BA8AB
+const vec3 C_TURQUOISE = vec3(0.6078, 0.6588, 0.6706);
+// #CCD0CF (highlight)
+const vec3 C_CYAN      = vec3(0.8000, 0.8157, 0.8118);
 
 // Smooth color map transition through the palette based on scalar t in [0, 1]
 vec3 getWaveColor(float t) {
