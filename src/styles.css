@@ -477,12 +477,6 @@ body {
   pointer-events: none;
 }
 
-/* Pre-decoded pose frames are painted here, stacked exactly over the (hidden) source video. */
-.doodle-hero-canvas {
-  position: absolute;
-  inset: 0;
-}
-
 .doodle-hero-loading {
   position: absolute;
   inset: auto 0 12%;
