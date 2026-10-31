@@ -31,7 +31,7 @@ export const ShowcaseSection: React.FC = () => {
       id="projects"
       zIndex={30}
       trackHeight="220vh"
-      backgroundColor="#06141B"
+      backgroundColor="#1A0F2E"
       className="showcase-curtain"
       onProgress={applyProgress}
     >
